@@ -176,7 +176,8 @@ if(updateable){
   
   var message = "YOU FOUND WALDO!! You took " + timeElapsed + " seconds to find Waldo.";
     textinfo = new google.maps.InfoWindow({content: message});
-    textinfo.open(map, markerAtCenter);
+    textinfo.open(map, marker);
+    markerAtCenter.setMap(null);
   
   }
 }
@@ -266,10 +267,5 @@ redraw();
 </center>
 </body>
 </html>
-
-
-
-
-
 
 
