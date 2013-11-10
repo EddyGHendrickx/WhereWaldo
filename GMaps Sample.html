@@ -1,3 +1,4 @@
+ 
 <!DOCTYPE html>
 <html>
 <title>Where's Waldo?</title>
@@ -10,6 +11,8 @@ src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6
 window.trianglePos = 0;
 window.width2 = 16;
 window.score = 0;
+window.scores = new Array();
+window.scoresIndex = 0;
 </script>
 <script>
 //global variables
@@ -131,9 +134,10 @@ function continent(){
   prompts[0] = "Waldo is on the continent with the largest fresh water lake in the world"
   prompts[1] = "Waldo is on the continent with the highest waterfalls and volcanoes"
   prompts[2] = "Waldo is on the continent with the highest waterfalls and volcanoes"
-  prompts[3] = "Waldo is on the continent with 66% of the world's chocolate"
-  prompts[4] = "Waldo is on the continent with 66% of the world's chocolate"
-  prompts[5] = "Waldo is on the continent with 66% of the world's chocolate"
+  prompts[3] = "Waldo is on the continent that has fewer internet connections than New York City"
+  prompts[4] = "Waldo is on the continent with has fewer internet connections than New York City"
+  prompts[5] = "Waldo is on the continent with has fewer internet connections than New York City"
+
   prompts[6] = "Waldo is on the continent with 10 of the world's highest peaks"
   prompts[7] = "Waldo is on the only continent with no deserts"
   prompts[8] = "Waldo is on the continent with the most species of venomous snakes"
@@ -161,7 +165,7 @@ function updateDistance(){
 if(updateable){
   var distance = Math.sqrt(Math.pow((marker.getPosition().lat()-markerAtCenter.getPosition().lat()), 2) + Math.pow((marker.getPosition().lng()-markerAtCenter.getPosition().lng()), 2));
 
-  window.trianglePos = 1000 - (1000*distance)/49;
+ window.trianglePos = Math.max((1000 - (1000*distance)/49), window.width2);
   redraw();
   if (distance <= .1){
     var timeEnd = new Date().getTime() / 1000;
@@ -174,17 +178,47 @@ if(updateable){
     google.maps.event.removeListener(start);
   updateable=false;
   
-  var message = "YOU FOUND WALDO!! You took " + timeElapsed + " seconds to find Waldo.";
+  var message = "YOU FOUND WALDO!! You took " + timeElapsed + " seconds to find Waldo and you scored " + finalScore + " points.";
     textinfo = new google.maps.InfoWindow({content: message});
     textinfo.open(map, marker);
     markerAtCenter.setMap(null);
+    window.scores[window.scoresIndex] = finalScore;
   
+    window.scoresIndex++;
+  var div = document.getElementById("scoresTable");
+  var scores="";
+  scores=scores.concat("Score:");
+  for(var i = 0; i< window.scores.length; i++)
+  {
+  scores=scores.concat('\n');
+  scores=scores.concat(window.scores[i]);
+  }
+  div.textContent = scores;
+    var text = div.textContent;
+
+ window.setTimeout(checkPlayAgain,1000);
+
+function checkPlayAgain(){
+
+  var playAgain = prompt("Would you like to play another game?");
+
+    if (playAgain.toUpperCase() == "YES")
+      {    
+      window.location.reload();
+      }
+  else 
+  {
+    window.close();
+  }
+  
+ 
+}
+
+    
   }
 }
 }
-function dispayScore(){
 
-}
 
 google.maps.event.addDomListener(window, 'load', initialize);
 var start = google.maps.event.addDomListener(window, 'click', continent);
@@ -209,6 +243,9 @@ var start = google.maps.event.addDomListener(window, 'click', continent);
   td{
     height: 100px;
   }
+  iframe{
+    float: left;
+  }
 </style>
 </head>
 
@@ -228,6 +265,8 @@ var start = google.maps.event.addDomListener(window, 'click', continent);
   <canvas id="myCanvas" width="1000" height="25" >
 </canvas>
 <div id="googleMap" style="width:1000px;height:300px;"></div>
+<br/>
+
 
 <script>
 var c=document.getElementById("myCanvas");
@@ -264,7 +303,29 @@ var color = 'white';
 
 redraw();
 </script>
+<div id='scoresTable'>Score:</div>
+<script>
+    
+</script>
 </center>
+<iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fweb.engr.illinois.edu%2F%7Ebifft2%2F&width=40&layout=standard&action=like&show_faces=false&share=true&height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:45px; height:35px;" allowTransparency="true"></iframe>
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-related="jasoncosta" data-lang="en" data-size="large" data-count="none" style="float:center">Tweet</a>
+
+<div class="g-plusone" data-annotation="inline" data-width="40" data-href="http://web.engr.illinois.edu/~bifft2" style="float:center"></div>
+
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+<script type="text/javascript">
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+<script src="http://platform.tumblr.com/v1/share.js"></script>
+<a href="http://www.tumblr.com/share" title="Share on Tumblr" style="display:inline-block; text-indent:-9999px; overflow:hidden; width:129px; height:20px; background:url('http://platform.tumblr.com/v1/share_3.png') top left no-repeat transparent;">Share on Tumblr</a>
+
+
 </body>
 </html>
 
