@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+<title>Where's Waldo?</title>
+<head>
+<script
+src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM&sensor=false">
+</script>
+
+<script>
+window.trianglePos = 0;
+window.width2 = 16;
+window.score = 0;
+</script>
+<script>
+//global variables
+var myCenter=new google.maps.LatLng(0, 0);
+var map;
+var continents=new Array();
+var HighLong=new Array();
+var LowLat=new Array();
+var HighLat=new Array();
+var LowLong = new Array();
+var continentSet;
+var continentName;
+var index;
+var markerAtCenter;
+var marker;
+var timeStart;
+function initialize()
+{
+continentSet = false;
+var mapProp = {
+  center:myCenter,
+  zoom:2,
+  mapTypeId:google.maps.MapTypeId.ROADMAP
+  };
+continents[0]="North America"
+  HighLat[0] = 70;
+  LowLong[0] = -160;
+  LowLat[0]=18;
+  HighLong[0]=-65;
+  continents[1]="South America"
+  HighLat[1] = 9;
+  LowLong[1] = -84;
+  LowLat[1]=0;
+  HighLong[1]=-50;
+  continents[2]="South America"
+  HighLat[2] = 0;
+  LowLong[2] = -81;
+  LowLat[2]=-55;
+  HighLong[2]=-37;
+  continents[3]="Africa"
+  HighLat[3] = 33;
+  LowLong[3] = 0;
+  LowLat[3]=0;
+  HighLong[3]=18;
+  continents[4]="Africa"
+  HighLat[4] = 36;
+  LowLong[4] = 0;
+  LowLat[4]=0;
+  HighLong[4]=60;
+  continents[5]="Africa"
+  HighLat[5] = 0;
+  LowLong[5] = 0;
+  LowLat[5]=-32;
+  HighLong[5]=45;
+  continents[6]="Asia"
+  HighLat[6] = 69;
+  LowLong[6] = 35;
+  LowLat[6]=0;
+  HighLong[6]=130;
+  continents[7]="Europe"
+  HighLat[7] = 70;
+  LowLong[7] = 0;
+  LowLat[7]=36;
+  HighLong[7]=36;
+  continents[8]="Australia"
+  HighLat[8] = -12;
+  LowLong[8] = 113;
+  LowLat[8]=-38;
+  HighLong[8]=154;
+  continents[9]="North America"
+  HighLat[9]=69
+  LowLong[9]=-162
+  LowLat[9]=56
+  HighLong[9]=-135
+  continents[10]="North America"
+  HighLat[10]=31
+  LowLong[10]=-116
+  LowLat[10]=14
+  HighLong[10]=-89
+
+
+index= Math.floor(Math.random()*continents.length);
+continentName = continents[index];
+var maxLat = Number(HighLat[index]);
+var minLat = Number(LowLat[index]);
+var latDif = maxLat - minLat;
+var maxLong = Number(HighLong[index]);
+var minLong = Number(LowLong[index]);
+var lat = (Math.random()*(maxLat-minLat))+minLat;
+var longi = (Math.random()*(maxLong-minLong))+minLong;
+
+
+map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+
+var myLatlng = new google.maps.LatLng(lat,longi);
+var image = 'http://media.tumblr.com/5aaedcfe0f9e211fdc77233e213e32f5/tumblr_inline_mw1lddU57H1qzsq80.png';
+marker=new google.maps.Marker({
+  position:myLatlng,
+  icon:image
+  });
+
+marker.setMap(null);
+}
+
+function continent(){
+  var arrayOfCenters= new Array();
+  arrayOfCenters[0] = new google.maps.LatLng(42.293564,-101.304932);//north america
+  arrayOfCenters[1] = new google.maps.LatLng(-16.299051,-58.414307);//south america
+  arrayOfCenters[2] = new google.maps.LatLng(-16.299051,-58.414307);//south america
+  arrayOfCenters[3] = new google.maps.LatLng(-0.35156, 22.648315);//africa
+  arrayOfCenters[4] = new google.maps.LatLng(-0.35156, 22.648315);//africa
+  arrayOfCenters[5] = new google.maps.LatLng(-0.35156, 22.648315);//africa
+  arrayOfCenters[6] = new google.maps.LatLng(51.618017,84.968262);//asia
+  arrayOfCenters[7] = new google.maps.LatLng(50.289339,18.226318);//europe
+  arrayOfCenters[8] = new google.maps.LatLng(-24.686952,132.335815);//australia
+  arrayOfCenters[9] = new google.maps.LatLng(42.293564,-101.304932);//north america
+  arrayOfCenters[10] = new google.maps.LatLng(42.293564,-101.304932);//north america
+    var prompts = new Array();
+  prompts[0] = "Waldo is on the continent with the largest fresh water lake in the world"
+  prompts[1] = "Waldo is on the continent with the highest waterfalls and volcanoes"
+  prompts[2] = "Waldo is on the continent with the highest waterfalls and volcanoes"
+  prompts[3] = "Waldo is on the continent with 66% of the world's chocolate"
+  prompts[4] = "Waldo is on the continent with 66% of the world's chocolate"
+  prompts[5] = "Waldo is on the continent with 66% of the world's chocolate"
+  prompts[6] = "Waldo is on the continent with 10 of the world's highest peaks"
+  prompts[7] = "Waldo is on the only continent with no deserts"
+  prompts[8] = "Waldo is on the continent with the most species of venomous snakes"
+  prompts[9] = "Waldo is on the continent with the largest fresh water lake in the world"
+  prompts[10] = "Waldo is on the continent with the largest fresh water lake in the world"
+  while(continentSet === false){
+    var answerContinent = prompt(prompts[index]);
+    if (answerContinent.toUpperCase() === continentName.toUpperCase()){map.setCenter(arrayOfCenters[index]);
+      map.setZoom(3);
+      markerAtCenter =new google.maps.Marker({position:arrayOfCenters[index],
+        draggable: true});
+      markerAtCenter.setMap(map);
+      google.maps.event.addDomListener(window, 'mousemove', updateDistance);
+      textinfo = new google.maps.InfoWindow({
+        content: " Drag me to Waldo :)"
+      });
+      textinfo.open(map, markerAtCenter);
+timeStart = new Date().getTime() / 1000;
+      continentSet = true;
+    } 
+  }
+}
+var updateable = true;
+function updateDistance(){
+if(updateable){
+  var distance = Math.sqrt(Math.pow((marker.getPosition().lat()-markerAtCenter.getPosition().lat()), 2) + Math.pow((marker.getPosition().lng()-markerAtCenter.getPosition().lng()), 2));
+
+  window.trianglePos = 1000 - (1000*distance)/49;
+  redraw();
+  if (distance <= .1){
+    var timeEnd = new Date().getTime() / 1000;
+    marker.setMap(map);
+    var timeElapsed = Math.floor(timeEnd - timeStart);
+  var maxScore = 100;
+    var finalScore = Number(maxScore)-Number(timeElapsed);
+    markerAtCenter.setDraggable(false);
+  markerAtCenter.setClickable(false);
+    google.maps.event.removeListener(start);
+  updateable=false;
+  
+  var message = "YOU FOUND WALDO!! You took " + timeElapsed + " seconds to find Waldo.";
+    textinfo = new google.maps.InfoWindow({content: message});
+    textinfo.open(map, markerAtCenter);
+  
+  }
+}
+}
+function dispayScore(){
+
+}
+
+google.maps.event.addDomListener(window, 'load', initialize);
+var start = google.maps.event.addDomListener(window, 'click', continent);
+
+
+
+</script>
+<style>
+  .waldoImg{
+    float: left;
+    width: 100px;
+    height: auto;
+  }
+  .speechBubble{
+    float: left;
+    height: auto;
+    vertical-align: top;
+  }
+  h1{
+    font-family: "Century Gothic", sans-serif;
+  }
+  td{
+    height: 100px;
+  }
+</style>
+</head>
+
+<body>
+<center>
+  <h1>Where's Waldo?</h1>
+  <table>
+    <tr>
+      <td>
+        <img src="http://images1.wikia.nocookie.net/__cb20070925014343/waldo/images/e/e7/Waldo.1987.jpg" class= “waldoImg”></img>
+      </td>
+      <td>
+        <img src="http://media.tumblr.com/d2e2bcb867440c3b6a91167bcc88ca42/tumblr_inline_mw1ba6bnTf1qzsq80.gif" class= "speechBubble"></img>
+      </td>
+    </tr>
+  </table>
+  <canvas id="myCanvas" width="1000" height="25" >
+</canvas>
+<div id="googleMap" style="width:1000px;height:300px;"></div>
+
+<script>
+var c=document.getElementById("myCanvas");
+var ctx=c.getContext("2d");
+
+// Create gradient
+
+function redraw() {
+  ctx.clearRect(0, 0, 1000, 25);
+  var grd=ctx.createLinearGradient(0,0,1000,25);
+grd.addColorStop(0,"blue");
+grd.addColorStop(1,"red");
+
+// Fill with gradient
+ctx.fillStyle=grd;
+ctx.fillRect(0,0,1000,25);
+
+var x =0;
+var y = 0;
+window.width2 = 16;
+var height = 15;
+var color = 'white';
+ ctx.fillStyle = color;
+ ctx.beginPath();
+ ctx.moveTo(window.trianglePos-window.width2, 0);
+ ctx.lineTo(window.trianglePos,0);
+ ctx.lineTo(window.trianglePos - window.width2/2,height);
+ ctx.lineTo(window.trianglePos-window.width2,0);
+ ctx.fill();
+ ctx.stroke();
+ ctx.closePath();
+ ctx.fillStyle = 'white';
+}
+
+redraw();
+</script>
+</center>
+</body>
+</html>
+
+
+
+
+
+
+
